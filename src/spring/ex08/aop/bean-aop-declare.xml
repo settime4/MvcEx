@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	">
+	 
+	<aop:aspectj-autoproxy/>
+	 
+	<bean id="animal" class="spring.ex08.aop.Animal"/>
+	<bean id="dog" class="spring.ex08.aop.Dog"/>
+	<bean id="cat" class="spring.ex08.aop.Cat"/>
+	 
+	<!--  
+	<aop:config>
+		<aop:aspect ref="animal">
+			<aop:pointcut expression="execution(* *.eat(..))" id="eating"/>
+			<aop:before method="rush" pointcut-ref="eating"/> 
+			<aop:after method="sleep" pointcut-ref="eating"/> 
+		</aop:aspect>
+	</aop:config>
+	 -->
+	
+	<!-- 
+	1. Advice = aspect가 무엇을 언제 할지 정의  ex)  <aop:before method="rush" pointcut-ref="eating"/>
+	2. 조인포인트  > pointcut : aspect가 어디서 할지 정의
+	3. Aspect : 공통기능 구현한 클래스 + Advice + pointcut
+	4. Weaver : 임시 클래스의 객체를 만들어준다 
+	 -->
+
+</beans>

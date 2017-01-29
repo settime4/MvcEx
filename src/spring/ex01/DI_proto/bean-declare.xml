@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- 1.빈 선언 : 기본생성자 이용 -->
+	<bean id="dog" class="spring.ex01.DI_proto.Dog" />
+	<bean id="cat" class="spring.ex01.DI_proto.Cat" />
+	<!-- Dog dog = new Dog(); -->
+
+	<!-- 2.생성자 주입 -->
+	<bean id="dog2" class="spring.ex01.DI_proto.Dog">
+		<constructor-arg value="뽀삐"/>
+		<constructor-arg value="밥"/>
+		<constructor-arg ref="cat"/>
+	</bean>
+	
+	<!--  3.팩토리 메소드를 이용한 객체생성 -->
+	<bean id="zoo" class="spring.ex01.DI_proto.Zoo" factory-method="getInstance"/>
+	
+	<!-- 4.prototype
+	  the default value of scope is "singleton" -->
+	<bean id="dog01" class="spring.ex01.DI_proto.Dog" scope="prototype"/>
+	<bean id="zoo01" class="spring.ex01.DI_proto.Zoo" scope="prototype" factory-method="getInstance" init-method="open" destroy-method="close"/>
+
+</beans>

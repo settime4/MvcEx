@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	
+	http://mybatis.org/schema/mybatis-spring
+	http://mybatis.org/schema/mybatis-spring.xsd
+	
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	">
+	
+	<mvc:annotation-driven/>
+
+	<context:component-scan base-package="com.customer" />
+	<!-- 
+	<context:component-scan base-package="com.customer.repository"/>
+	<context:component-scan base-package="com.customer.service"/>
+	 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/customer/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value= "jdbc:oracle:thin:@localhost:1521:xe"/>
+		<property name="username" value="jsp0801"/>
+		<property name="password" value="oracle"/>
+	</bean> 
+	
+	<!-- 
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	 -->
+		
+	<!--  BeanNameUrlHandlerMapping 1. 기본 핸들러맵핑 우선순위 가장 높음
+	
+	<bean name="/test02" id="test02" class="spring.handler.HelloController"/>
+	<bean name="/hw" id="hw" class="spring.handler.HwController"/>
+	-->
+	
+	<!--  DefaultAnnotationHandlerMapping 2. 기본 핸들러맵핑 -->
+	
+	<!-- 
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerBeanNameHandlerMapping"/>
+	
+	<bean name="test02" id="test02" class="spring.handler.HelloController"/>
+	<bean name="hw" id="hw" class="spring.handler.HwController"/>
+	 -->
+	
+	
+	
+	<!-- Mybatis  활용한 방법-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="/WEB-INF/mybatis/mybatis-config.xml"/>
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>
+	
+	<!-- 
+	<bean id="customerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.customer.mapper.CustomerMapper"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	 -->
+	 
+	<mybatis:scan base-package="com.customer.mapper"/>
+	
+	<bean id ="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!--  
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="transaction*" />-->
+			 <!-- <tx:method name="get*" propagation="SUPPORTS" read-only="true"/> --><!-- 
+		</tx:attributes>
+	</tx:advice> 
+	
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* com.customer.service.*.*(..))" id="txPointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+	</aop:config>
+	
+	-->
+	
+	<tx:annotation-driven transaction-manager="txManager" />
+	
+		<!--  
+	<aop:config>
+		<aop:aspect ref="animal">
+			<aop:pointcut expression="execution(* *.eat(..))" id="eating"/>
+			<aop:before method="rush" pointcut-ref="eating"/> 
+			<aop:after method="sleep" pointcut-ref="eating"/> 
+		</aop:aspect>
+	</aop:config>
+	 -->
+	
+	<!-- 
+	1. Advice = aspect가 무엇을 언제 할지 정의  ex)  <aop:before method="rush" pointcut-ref="eating"/>
+	2. 조인포인트  > pointcut : aspect가 어디서 할지 정의
+	3. Aspect : 공통기능 구현한 클래스 + Advice + pointcut
+	4. Weaver : 임시 클래스의 객체를 만들어준다 
+	 -->
+	
+	
+	
+</beans>

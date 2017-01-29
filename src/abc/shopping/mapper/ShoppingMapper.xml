@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+									"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="abc.shopping.mapper.ShoppingMapper">
+
+	<select id="findByProductId" parameterType="long" resultType="Product">
+		select product_id as id, name, price, description from product where
+		product_id=#{id}
+	</select>
+
+	<select id="findByCustomerId" parameterType="long" resultType="Customer">
+		select customer_id as id, name, address, email from customer where
+		customer_id=#{id}
+	</select>
+
+	<select id="findByOrderIdFromOrderItem" parameterType="long"
+		resultMap="OrderItemResult">
+		select * from orderitem where order_id=#{id}
+	</select>
+
+	<resultMap type="OrderItem" id="OrderItemResult">
+		<id property="id" column="orderitem_id" />
+		<result property="amount" column="amount" />
+		<association property="product" column="product_id"
+			select="findByProductId" />
+	</resultMap>
+
+	<resultMap type="Orders" id="OrderResult">
+		<id property="id" column="order_id" />
+		<result property="order_date" column="order_date" />
+		<association property="customer" column="customer_id"
+			select="findByCustomerId" />
+		<collection property="items" column="order_id"
+			select="findByOrderIdFromOrderItem"></collection>
+	</resultMap>
+
+	<select id="findByOrderItemId" parameterType="long" resultMap="OrderItemResult">
+		select orderitem_id, amount, order_id, product_id from orderitem where
+		orderitem_id=#{id}
+	</select>
+
+	<select id="findByOrderId" parameterType="long" resultMap="OrderResult">
+		select order_id, to_char(ORDER_DATE, 'yy-MM-dd') as order_date,
+		customer_id from orders where order_id=#{id}
+	</select>
+	
+	
+	<select id="find" parameterType="Customer" resultType="Customer">
+		select * from customer
+		<where>
+			<if test="name != null">
+				and name like #{name}
+			</if>
+			<if test="address != null and address !='' ">
+				and address like #{address}
+			</if>
+			<if test="email != null and email !=''">
+				and email like #{email}
+			</if>
+		</where>
+	</select>
+
+</mapper>

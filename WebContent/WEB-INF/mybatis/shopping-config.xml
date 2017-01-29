@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+									"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="abc.shopping.dto.Product" alias="Product"/>
+		<typeAlias type="abc.shopping.dto.Customer" alias="Customer"/>
+		<typeAlias type="abc.shopping.dto.Orders" alias="Orders"/>
+		<typeAlias type="abc.shopping.dto.OrderItem_ex" alias="OrderItem_ex"/>
+		<typeAlias type="abc.shopping.dto.OrderItem" alias="OrderItem"/>
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="abc/shopping/mapper/ShoppingMapper.xml"/>
+	</mappers>
+	
+	
+</configuration>

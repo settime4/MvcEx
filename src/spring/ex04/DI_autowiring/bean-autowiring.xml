@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byType"	> <!-- 3번째 우선순위 -->
+
+	<bean id="business" class="spring.ex04.DI_autowiring.BusinessTeam" autowire-candidate="false"/>
+	<bean id="financial" class="spring.ex04.DI_autowiring.FinancialTeam" autowire-candidate="false"/>
+	<bean id="planning" class="spring.ex04.DI_autowiring.PlanningTeam" autowire-candidate="default"/>
+
+	<bean id="employee" class="spring.ex04.DI_autowiring.Employee" autowire="byType"> <!-- 2번쨰 우선순위 -->
+		<property name="name" value="임미영"/>
+<!--	<property name="dept" ref="business"/> 첫번째 우선순위 -->
+	</bean>
+	
+</beans>

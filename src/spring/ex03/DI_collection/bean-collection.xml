@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="business" class="spring.ex03.DI_collection.BusinessTeam" />
+	<bean id="financial" class="spring.ex03.DI_collection.FinancialTeam" />
+	<bean id="planning" class="spring.ex03.DI_collection.PlanningTeam" />
+
+	<bean id="company" class="spring.ex03.DI_collection.Company">
+		<property name="department">
+			<list>
+				<ref bean="business" />
+				<ref bean="financial" />
+				<ref bean="planning" />
+				<ref bean="business" />
+			</list>
+			<!-- <set> <ref bean="business"/> <ref bean="financial"/> <ref bean="planning"/> 
+				<ref bean="business"/> </set> -->
+		</property>
+	</bean>
+
+	<bean id="company02" class="spring.ex03.DI_collection.Company">
+		<property name="dept">
+			<map>
+				<entry key="0001" value-ref="business"/>
+				<entry key="0002" value-ref="financial"/>
+				<entry key="0003" value-ref="planning"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="company03" class="spring.ex03.DI_collection.Company">
+		<property name="p">
+			<props>
+				<prop key="busi">spring.ex03.DI_collection.BusinessTeam</prop>
+				<prop key="plan">spring.ex03.DI_collection.PlanningTeam</prop>
+				<prop key="fin">spring.ex03.DI_collection.FinancialTeam</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

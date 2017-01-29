@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- the First way -->
+	<bean id="employee01" class="spring.ex02.DI_property.Employee">
+		<property name="name" value="lee"/>
+		<!-- it needs setter-method -->
+		<property name="dept" >
+			<bean class="spring.ex02.DI_property.Department">
+			<!-- such as inner class, there isn't a id value -->
+				<property name="name" value="재무팀"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- the Second way -->
+	<bean id="department" class="spring.ex02.DI_property.Department" p:name="개발부"/>
+	<bean id="employee02" class="spring.ex02.DI_property.Employee" p:name="임미영" p:dept-ref="department"/>
+	
+</beans>
